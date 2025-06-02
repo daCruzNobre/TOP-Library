@@ -38,7 +38,7 @@ function addBookToLibrary(title, year, genre, author) {
 function displayBooks(){
     const table = document.querySelector('tbody');
     console.log(table);
-    for (let book = 0; book <= myLibrary.length; book ++) {
+    for (let book = 0; book < myLibrary.length; book ++) {
         const row = document.createElement('tr');    
         const title = document.createElement('td');    
         const year = document.createElement('td');    
@@ -58,6 +58,19 @@ function displayBooks(){
         table.appendChild(row);
         console.log(row);
     }
+}
+
+// grab reference to New Book button
+// show form when clicking New Book Button
+const newBookBtn = document.querySelector('.newBtn');
+newBookBtn.addEventListener('click', (e) => {
+  e.preventDefault();
+  const form = document.querySelector('.form');
+  form.classList.remove('hidden');
+})
+// function to add books to the array
+function addBooks() {
+
 }
 
 displayBooks();
