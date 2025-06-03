@@ -1,29 +1,26 @@
 //initialize book array
 let myLibrary = [
-  {
-    title: "Dracula",
-    year: 1897,
-    genre: "Horror",
-    author: "Bram Stoker",
-    isRead: false,
-    id: '1a7f1efb-6645-4ebc-a01d-6a94046d67b2',
-  },
-  {
-    title: "Frankenstein",
-    year: 1818,
-    genre: "Horror",
-    author: "Mary Shelley",
-    isRead: false,
-    id: '0b22791b-c724-4a66-865c-1b463cf2c567'
-  },
-  {
-    title: "The call of Cthulhu",
-    year: 1928,
-    genre: "Horror",
-    author: "H.P Lovecraft",
-    isRead: false,
-    id: '4b0c085d-ba17-40d4-b72c-971965c77f1e'
-  },
+  new Book(
+    "Dracula",
+    1897,
+    "Horror",
+    "Bram Stoker",
+    crypto.randomUUID() // Generate a unique ID
+  ),
+  new Book(
+    "Frankenstein",
+    1818,
+    "Horror",
+    "Mary Shelley",
+    crypto.randomUUID() // Generate a unique ID
+  ),
+  new Book(
+    "The Call of Cthulhu", // Corrected title
+    1928,
+    "Horror",
+    "H.P Lovecraft",
+    crypto.randomUUID() // Generate a unique ID
+  ),
 ];
 
 // constructor book function
@@ -34,6 +31,14 @@ function Book(title, year, genre, author, id, isRead = false) {
   this.author = author;
   this.id = id;
   this.isRead = isRead;
+}
+
+Book.prototype.setReadStatus = function() {
+  if (this.isRead){
+    this.isRead = false
+  } else {
+    this.isRead = true
+  }
 }
 
 // function to add books to the aarray
@@ -78,7 +83,25 @@ function displayBooks() {
     // crate fontawesome icon
     const bookIcon = document.createElement('i');
     bookIcon.classList.add('fa-solid','fa-book');
-    bookIcon.style.color = "rgb(0, 112, 79)"
+    bookIcon.dataset.id = myLibrary[book].id;
+    
+    if(myLibrary[book].isRead){
+      bookIcon.style.color = "rgb(0, 112, 79)"
+    } else {
+      bookIcon.style.color = "rgb(112, 0, 0)"
+    }
+    
+    bookIcon.addEventListener('click', e => {
+       // Find the book object by its ID when the icon is clicked
+        const clickedBookId = e.target.dataset.id;
+        const bookToUpdate = myLibrary.find(book => book.id === clickedBookId);
+
+        if (bookToUpdate) {
+            bookToUpdate.setReadStatus(); // Call the method on the actual Book instance
+            console.log(bookToUpdate.isRead)
+            displayBooks(); // Re-render the table to show the updated status
+        }
+    })
 
     status.appendChild(bookIcon);
     const deleteIcon = document.createElement('i');
